@@ -10,6 +10,7 @@ class GameLogic extends Game with TapDetector {
   bool isClicked = false;
   Size screenSize;
   Paint boxPaint = Paint();
+  num count = 0;
 
   void resize(Size size) {
     screenSize = size;
@@ -26,6 +27,7 @@ class GameLogic extends Game with TapDetector {
     if ((dx >= screenCenterX - 140 && dx <= screenCenterX + 140) &&
         (dy >= screenCenterY - 140 && dy <= screenCenterY + 140)) {
       isClicked = !isClicked;
+      count++;
     }
   }
 
@@ -38,9 +40,9 @@ class GameLogic extends Game with TapDetector {
     double screenCenterY = screenSize.height / 2;
     double circleRadius = 140.0;
 
-    ui.ParagraphStyle style = ui.ParagraphStyle();
+    ui.ParagraphStyle style = ui.ParagraphStyle(textAlign: TextAlign.center);
     ui.ParagraphBuilder pgBuilder = ui.ParagraphBuilder(style);
-    ui.TextStyle textStyle = ui.TextStyle(color: Colors.white, fontSize: 30);
+    ui.TextStyle textStyle;
 
     if (isClicked) {
       bgPaint.color = Color(0xff121212);
@@ -54,10 +56,11 @@ class GameLogic extends Game with TapDetector {
 
     pgBuilder
       ..pushStyle(textStyle)
-      ..addText('Touch me');
+      ..addText('Touch me')
+      ..addText('\r\n ${count > 0 ? count : ''}');
 
     ui.Paragraph paragraph = pgBuilder.build()
-      ..layout(ui.ParagraphConstraints(width: 140));
+      ..layout(ui.ParagraphConstraints(width: 150));
 
     canvas.drawRect(bgRect, bgPaint);
     canvas.drawCircle(
